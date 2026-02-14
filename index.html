@@ -1193,10 +1193,14 @@
             let finalAngle;
             if (targetRoleIndex !== null) {
                 // Calculate angle to land on specific role
+                // The wheel is drawn with segments starting at -90° (top)
+                // Pointer is at top, so we need to calculate the rotation to bring target segment to top
                 const segmentAngle = 360 / roles.length;
-                const targetAngle = targetRoleIndex * segmentAngle + (segmentAngle / 2);
-                const normalizedTarget = (360 - targetAngle) % 360;
-                finalAngle = normalizedTarget;
+                const targetSegmentStart = targetRoleIndex * segmentAngle;
+                const targetSegmentCenter = targetSegmentStart + (segmentAngle / 2);
+                // Rotate to align target segment center with pointer (at top, which is 270° in our coordinate system)
+                const rotationNeeded = (360 - targetSegmentCenter) % 360;
+                finalAngle = rotationNeeded;
             } else {
                 // Random angle
                 finalAngle = Math.random() * 360;
